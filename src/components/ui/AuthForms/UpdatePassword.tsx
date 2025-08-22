@@ -1,28 +1,24 @@
 'use client';
 
-import Button from '@/components/ui/Button';
-import Link from 'next/link';
-import { signInWithPassword } from '@/src/lib/utils/auth-helpers/server';
+import Button from '@/src/components/ui/Button';
+import { updatePassword } from '@/src/lib/utils/auth-helpers/server';
 import { handleRequest } from '@/src/lib/utils/auth-helpers/client';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-// Define prop type with allowEmail boolean
-interface PasswordSignInProps {
-  allowEmail: boolean;
+interface UpdatePasswordProps {
   redirectMethod: string;
 }
 
-export default function PasswordSignIn({
-  allowEmail,
+export default function UpdatePassword({
   redirectMethod
-}: PasswordSignInProps) {
+}: UpdatePasswordProps) {
   const router = redirectMethod === 'client' ? useRouter() : null;
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setIsSubmitting(true); // Disable the button while the request is being handled
-    await handleRequest(e, signInWithPassword, router);
+    await handleRequest(e, updatePassword, router);
     setIsSubmitting(false);
   };
 
@@ -35,23 +31,21 @@ export default function PasswordSignIn({
       >
         <div className="grid gap-2">
           <div className="grid gap-1">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              placeholder="name@example.com"
-              type="email"
-              name="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              className="w-full p-3 rounded-md bg-zinc-800"
-            />
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">New Password</label>
             <input
               id="password"
               placeholder="Password"
               type="password"
               name="password"
+              autoComplete="current-password"
+              className="w-full p-3 rounded-md bg-zinc-800"
+            />
+            <label htmlFor="passwordConfirm">Confirm New Password</label>
+            <input
+              id="passwordConfirm"
+              placeholder="Password"
+              type="password"
+              name="passwordConfirm"
               autoComplete="current-password"
               className="w-full p-3 rounded-md bg-zinc-800"
             />
@@ -62,27 +56,10 @@ export default function PasswordSignIn({
             className="mt-1"
             loading={isSubmitting}
           >
-            Sign in
+            Update Password
           </Button>
         </div>
       </form>
-      <p>
-        <Link href="/signin/forgot_password" className="font-light text-sm">
-          Forgot your password?
-        </Link>
-      </p>
-      {allowEmail && (
-        <p>
-          <Link href="/signin/email_signin" className="font-light text-sm">
-            Sign in via magic link
-          </Link>
-        </p>
-      )}
-      <p>
-        <Link href="/signin/signup" className="font-light text-sm">
-          Don't have an account? Sign up
-        </Link>
-      </p>
     </div>
   );
 }

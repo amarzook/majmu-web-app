@@ -1,7 +1,7 @@
 'use client';
 
-import Button from '@/components/ui/Button';
-import LogoCloud from '@/components/ui/LogoCloud';
+import Button from '@/src/components/ui/Button';
+import LogoCloud from '@/src/components/ui/LogoCloud';
 import type { Tables } from '@/types_db';
 import { getStripe } from '@/src/lib/utils/stripe/client';
 import { checkoutWithStripe } from '@/src/lib/utils/stripe/server';

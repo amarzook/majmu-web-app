@@ -1,4 +1,4 @@
-import Pricing from '@/components/ui/Pricing/Pricing';
+import Pricing from '@/src/components/ui/Pricing/Pricing';
 import { createClient } from '@/src/lib/utils/supabase/server';
 import {
   getProducts,

@@ -1,26 +1,28 @@
 'use client';
 
-import Button from '@/components/ui/Button';
-import React from 'react';
+import Button from '@/src/components/ui/Button';
 import Link from 'next/link';
-import { signUp } from '@/src/lib/utils/auth-helpers/server';
+import { signInWithPassword } from '@/src/lib/utils/auth-helpers/server';
 import { handleRequest } from '@/src/lib/utils/auth-helpers/client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 // Define prop type with allowEmail boolean
-interface SignUpProps {
+interface PasswordSignInProps {
   allowEmail: boolean;
   redirectMethod: string;
 }
 
-export default function SignUp({ allowEmail, redirectMethod }: SignUpProps) {
+export default function PasswordSignIn({
+  allowEmail,
+  redirectMethod
+}: PasswordSignInProps) {
   const router = redirectMethod === 'client' ? useRouter() : null;
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setIsSubmitting(true); // Disable the button while the request is being handled
-    await handleRequest(e, signUp, router);
+    await handleRequest(e, signInWithPassword, router);
     setIsSubmitting(false);
   };
 
@@ -60,14 +62,13 @@ export default function SignUp({ allowEmail, redirectMethod }: SignUpProps) {
             className="mt-1"
             loading={isSubmitting}
           >
-            Sign up
+            Sign in
           </Button>
         </div>
       </form>
-      <p>Already have an account?</p>
       <p>
-        <Link href="/signin/password_signin" className="font-light text-sm">
-          Sign in with email and password
+        <Link href="/signin/forgot_password" className="font-light text-sm">
+          Forgot your password?
         </Link>
       </p>
       {allowEmail && (
@@ -77,6 +78,11 @@ export default function SignUp({ allowEmail, redirectMethod }: SignUpProps) {
           </Link>
         </p>
       )}
+      <p>
+        <Link href="/signin/signup" className="font-light text-sm">
+          Don't have an account? Sign up
+        </Link>
+      </p>
     </div>
   );
 }
