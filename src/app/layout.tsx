@@ -4,7 +4,7 @@ import Navbar from '@/src/components/ui/Navbar';
 import { Toaster } from '@/src/components/ui/Toasts/toaster';
 import { PropsWithChildren, Suspense } from 'react';
 import { getURL } from '@/src/lib/utils/helpers';
-import 'styles/main.css';
+import 'src/styles/main.css';
 
 const title = 'Next.js Subscription Starter';
 const description = 'Brought to you by Vercel, Stripe, and Supabase.';
