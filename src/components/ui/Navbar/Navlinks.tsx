@@ -13,18 +13,25 @@ interface NavlinksProps {
 }
 
 export default function Navlinks({ user }: NavlinksProps) {
-  const router = getRedirectMethod() === 'client' ? useRouter() : null;
+  // Always call hooks in the top-level
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const redirectMethod = getRedirectMethod();
 
   return (
-    <div className="relative flex flex-row justify-between py-4 align-center md:py-6">
+    <div className="relative flex flex-row justify-between py-4 md:py-6">
       <div className="flex items-center flex-1">
         <Link href="/" className={s.logo} aria-label="Logo">
           <Logo />
         </Link>
+
         <nav className="ml-6 space-x-2 lg:block">
-          <Link href="/" className={s.link}>
-            Pricing
-          </Link>
+          {user && (
+            <Link href="/dashboard" className={s.link}>
+              Dashboard
+            </Link>
+          )}
           {user && (
             <Link href="/account" className={s.link}>
               Account
@@ -32,18 +39,25 @@ export default function Navlinks({ user }: NavlinksProps) {
           )}
         </nav>
       </div>
-      <div className="flex justify-end space-x-8">
+
+      <div className="flex justify-end space-x-4">
         {user ? (
-          <form onSubmit={(e) => handleRequest(e, SignOut, router)}>
-            <input type="hidden" name="pathName" value={usePathname()} />
+          <form onSubmit={(e) => handleRequest(e, SignOut, redirectMethod === 'client' ? router : null)}>
+            <input type="hidden" name="pathName" value={pathname} />
             <button type="submit" className={s.link}>
               Sign out
             </button>
           </form>
         ) : (
-          <Link href="/signin" className={s.link}>
-            Sign In
-          </Link>
+          <div className="flex items-center space-x-1">
+            <Link href="/signin" className={s.link}>
+              Sign In
+            </Link>
+            <span className="text-gray-500">/</span>
+            <Link href="/signin/signup" className={s.link}>
+              Sign Up
+            </Link>
+          </div>
         )}
       </div>
     </div>
